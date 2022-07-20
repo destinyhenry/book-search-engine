@@ -20,7 +20,7 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, { parent, args }) => {
+    addUser: async ( parent, args ) => {
       const user = await user.create({ args });
       const token = signToken(user);
 
@@ -55,12 +55,12 @@ const resolvers = {
     throw new AuthenticationError('Please log in to add!')
     },
 
-        removeBook: async (parent, { bookId }, context) => {
-            if (context.user) {
-                const User = await User.findOneAndUpdate (
-                    {_id: context.user._id},
-                    { $pull: { book: book } },
-                    { new: true }
+    removeBook: async (parent, { bookId }, context) => {
+      if (context.user) {
+      const User = await User.findOneAndUpdate (
+      {_id: context.user._id},
+      { $pull: { book: bookId } },
+      { new: true }
                 )
     return User;
         }

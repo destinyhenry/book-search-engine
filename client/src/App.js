@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import SavedBooks from './pages/SavedBooks';
 import SearchBooks from './pages/SearchBooks';
 import Navbar from './components/Navbar';
@@ -8,7 +8,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-} from '@apollo/client';
+} from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 
 //new GraphQL server link 
@@ -43,16 +43,15 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
           <Navbar />
-          <Switch>
+        <Routes>
           <Route 
                 path="/" 
-                element= {SearchBooks}/>
+                element= {<SearchBooks/>}/>
       
               <Route 
                 path="/savedBooks" 
-                element={SavedBooks} />
-            
-          </Switch>
+                element={<SavedBooks/>} />
+          </Routes>
       </Router>
     </ApolloProvider>
   );

@@ -11,7 +11,7 @@ const LoginForm = (props) => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   // Replace the loginUser() functionality imported from the API file with the LOGIN_USER mutation functionality.
-  const [login] = useMutation(LOGIN_USER);
+  const [login, { error }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -30,17 +30,15 @@ const LoginForm = (props) => {
 
     try {
       // const response = await loginUser(userFormData);
-      const {userFormData} = await login({
-        variables: {userFormData},
+      const { data } = await login({
+        variables: {...userFormData},
       })
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      // if (!response.ok) {
+      //   throw new Error('something went wrong!');
+      // }
 
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
+      Auth.login(data.login.token);
     } catch (err) {
       console.error(err);
       setShowAlert(true);
