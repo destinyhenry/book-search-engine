@@ -1,27 +1,41 @@
 import React from 'react';
-import {ApolloClient,ApolloProvider} from '@apollo/client';
-import { BrowserRouter as Router, Routes, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SavedBooks from './pages/SavedBooks';
 import SearchBooks from './pages/SearchBooks';
 import Navbar from './components/Navbar';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-
-
-const client = new ApolloClient ({
-  request: (operation) => {
-    // get the authentication token from local storage if it exists
-   const token = localStorage.getItem("id_token");
-
-
-   operation.setContext ({
-    headers: {
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  });
-},
-  uri: "/graphql"
+//new GraphQL server link 
+const httpLink = createHttpLink({
+ 
+  uri: "/graphql",
 });
 
+const authLink = setContext((_, { headers }) => {
+  // retrieve token from localStorage
+  const token = localStorage.getItem("id_token");
+  return {
+    // HTTP to request headers of every request to include token
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+// creat apollo connection
+const client = new ApolloClient({
+  // concat authLink and httpLink obj so individual requests are receiving tokens
+  link: authLink.concat(httpLink),
+  // set up cache
+  cache: new InMemoryCache(),
+});
 
 
 function App() {
@@ -37,14 +51,6 @@ function App() {
               <Route 
                 path="/savedBooks" 
                 element={SavedBooks} />
-
-              <Route 
-                path="/signup" 
-                element={Signup}/>
-           
-              <Route 
-                path="/me" 
-                element={Login}/>
             
           </Switch>
       </Router>
