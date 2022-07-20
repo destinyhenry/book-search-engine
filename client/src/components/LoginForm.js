@@ -10,7 +10,7 @@ const LoginForm = (props) => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-
+  // Replace the loginUser() functionality imported from the API file with the LOGIN_USER mutation functionality.
   const [login] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
@@ -29,7 +29,10 @@ const LoginForm = (props) => {
     }
 
     try {
-      const response = await loginUser(userFormData);
+      // const response = await loginUser(userFormData);
+      const {userFormData} = await login({
+        variables: {userFormData},
+      })
 
       if (!response.ok) {
         throw new Error('something went wrong!');
