@@ -1,34 +1,47 @@
-onst { gql } = require('apollo-server-express');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-  type Profile {
-    _id: ID
-    name: String
-    email: String
-    # There is now a field to store the user's password
-    password: String
-    skills: [String]!
-  }
+    type Book {
+        _id: ID
+        author(s): [String]
+        description: String
+        bookId: String
+        image: String
+        forSale: String
+        link: String
+        title: String
+    }
 
-  # Set up an Auth type to handle returning data from a profile creating or user login
-  type Auth {
-    token: ID!
-    profile: Profile
+  # Set up an user type to handle returning data from a profile creation or user login
+  type User {
+        _id: ID
+        email: [String]
+        addeddBooks: [Book]
   }
 
   type Query {
-    profiles: [Profile]!
-    profile(profileId: ID!): Profile
+    me: User
+  }
+  type Auth{
+    token: ID!
+    user: User
+  }
+  input addedBook{
+    author(s): [String]
+    description: String
+    bookId: String
+    image: String
+    forSale: String
+    link: String
+    title: String
   }
 
   type Mutation {
-    # Set up mutations to handle creating a profile or logging into a profile and return Auth type
-    addProfile(name: String!, email: String!, password: String!): Auth
+    # Set up mutations to handle logging in and return Auth type
     login(email: String!, password: String!): Auth
-
-    addSkill(profileId: ID!, skill: String!): Profile
-    removeProfile(profileId: ID!): Profile
-    removeSkill(profileId: ID!, skill: String!): Profile
+    addUser(email: String!, password: String!): Auth
+    addBook(book: addedBook): User
+    removeBook(bookId: String!): User
   }
 `;
 

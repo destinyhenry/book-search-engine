@@ -45,7 +45,7 @@ const resolvers = {
       if (context.user) {
         const User = await User.findOneAndUpdate (
         {_id: context.user._id},
-        { $addToCollection: { addedBooks: book } },
+        { $addToSet: { book: book } },
         { new: true }
     );
     return User;
@@ -53,17 +53,17 @@ const resolvers = {
     throw new AuthenticationError('Please log in to add!')
     },
 
-//         removeProfile: async (parent, { profileId }) => {
-//       return Profile.findOneAndDelete({ _id: profileId });
-//     },
-//     removeSkill: async (parent, { profileId, skill }) => {
-//       return Profile.findOneAndUpdate(
-//         { _id: profileId },
-//         { $pull: { skills: skill } },
-//         { new: true }
-//       );
-//     },
-//   },
-// };
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                const User = await User.findOneAndUpdate (
+                    {_id: context.user._id},
+                    { $pull: { book: book } },
+                    { new: true }
+                )
+    return User;
+        }
+    }
+  }
+};
 
-// module.exports = resolvers;
+module.exports = resolvers;
