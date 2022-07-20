@@ -7,13 +7,11 @@ import { REMOVE_BOOK } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
 
 const SavedBooks = () => {
-  const {userDataLength, data} = useQuery({GET_ME});
-  const [deleteBook] = useMutation(REMOVE_BOOK);
-  const userData = data?.me || {};
-
-  if (!userData?.username) {
-    return (<h4>You must be logged in to view this page.</h4>)
-  }
+  // use the useQuery() Hook to execute the GET_ME query on load and save it to a variable named userData
+  const {userDataLength, userData} = useQuery({GET_ME});
+  // Use the useMutation() Hook to execute the REMOVE_BOOK mutation in the handleDeleteBook() function 
+  const [removeBook] = useMutation(REMOVE_BOOK);
+ 
   // use this to determine if `useEffect()` hook needs to run again
   // const userDataLength = Object.keys(userData).length;
 
@@ -52,7 +50,7 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({
+      await removeBook({
         variables: {bookId, token}, 
     
       });
