@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SavedBooks from './pages/SavedBooks';
 import SearchBooks from './pages/SearchBooks';
 import Navbar from './components/Navbar';
@@ -43,7 +43,7 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
           <Navbar />
-        <Routes>
+        <Switch>
           <Route 
                 path="/" 
                 element= {<SearchBooks/>}/>
@@ -51,7 +51,7 @@ function App() {
               <Route 
                 path="/savedBooks" 
                 element={<SavedBooks/>} />
-          </Routes>
+          </Switch>
       </Router>
     </ApolloProvider>
   );
