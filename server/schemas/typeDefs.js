@@ -16,7 +16,8 @@ const typeDefs = gql`
   type User {
         _id: ID
         email: [String]
-        addeddBooks: [Book]
+        bookCount: Int
+        addedBooks: [Book]
   }
 
   type Query {
@@ -26,7 +27,7 @@ const typeDefs = gql`
     token: ID!
     user: User
   }
-  input addedBook{
+  input addedBooks{
     author(s): [String]
     description: String
     bookId: String
