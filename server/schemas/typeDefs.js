@@ -1,49 +1,48 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-    type Book {
-        _id: ID
-        author(s): [String]
-        description: String
-        bookId: String
-        image: String
-        forSale: String
-        link: String
-        title: String
-    }
-
-  # Set up an user type to handle returning data from a profile creation or user login
   type User {
-        _id: ID
-        username: String
-        email: [String]
-        bookCount: Int
-        savedBooks: [Book]
+    _id: ID!
+    username: String
+    email: String
+    bookCount: Int
+    savedBooks: [Book]
   }
-
-  type Query {
-    me: User
+  type Book {
+    bookId = ID!
+    authors = [String]
+    description = String
+    title = String
+    image = String
+    link = String
   }
-  type Auth{
+  type Auth {
     token: ID!
     user: User
   }
-  input savedBooks{
-    author(s): [String]
-    description: String
-    bookId: String
-    image: String
-    forSale: String
-    link: String
-    title: String
+  type Query {
+    me: User
+    user(username: String!): User
+    books(username: String): [Book]
   }
-
+  input BookInput {
+    bookId: ID!
+    authors: [String]
+    description: String
+    title: String
+    image: String
+    link: String
+  }
   type Mutation {
-    # Set up mutations to handle logging in and return Auth type
+    addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
-    addUser(username: String! email: String!, password: String!): Auth
-    savedBooks(book: savedBooks): User
-    removeBook(bookId: String!): User
+    saveBook(bookId = ID!
+      authors = [String]!,
+      description = String!,
+      title = String!,
+      image = String!,
+      link = String!): User
+    removeBook(bookId: ID!): User
   }
 `;
 
